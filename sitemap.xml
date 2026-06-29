@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://yourdomain.com/tasbih</loc>
+    <lastmod>2026-06-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    
+    <!-- نسخه‌های زبانی -->
+    <xhtml:link rel="alternate" hreflang="fa" href="https://yourdomain.com/tasbih?lang=fa" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://yourdomain.com/tasbih?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://yourdomain.com/tasbih?lang=ar" />
+    <xhtml:link rel="alternate" hreflang="tr" href="https://yourdomain.com/tasbih?lang=tr" />
+    <xhtml:link rel="alternate" hreflang="ur" href="https://yourdomain.com/tasbih?lang=ur" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://yourdomain.com/tasbih?lang=hi" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://yourdomain.com/tasbih?lang=zh" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yourdomain.com/tasbih?lang=ja" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://yourdomain.com/tasbih?lang=ko" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://yourdomain.com/tasbih?lang=ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yourdomain.com/tasbih?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://yourdomain.com/tasbih?lang=es" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://yourdomain.com/tasbih?lang=de" />
+    <xhtml:link rel="alternate" hreflang="it" href="https://yourdomain.com/tasbih?lang=it" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://yourdomain.com/tasbih?lang=pt" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yourdomain.com/tasbih" />
+  </url>
+</urlset>
