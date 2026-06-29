@@ -1,0 +1,29 @@
+{
+  "name": "تسبیح دیجیتال | Digital Tasbih",
+  "short_name": "Tasbih",
+  "description": "تسبیح دیجیتال حرفه‌ای با ذخیره خودکار و ۱۰۰+ زبان",
+  "start_url": "/tasbih",
+  "display": "standalone",
+  "background_color": "#0b2a3b",
+  "theme_color": "#0b2a3b",
+  "orientation": "portrait",
+  "categories": ["lifestyle", "productivity", "religion"],
+  "icons": [
+    {
+      "src": "1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "fa",
+  "dir": "rtl",
+  "shortcuts": [
+    {
+      "name": "شروع تسبیح",
+      "short_name": "تسبیح",
+      "description": "شروع سریع تسبیح",
+      "url": "/tasbih"
+    }
+  ]
+}
