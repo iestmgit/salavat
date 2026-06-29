@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Tasbih - چندزبانه</title>
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <!-- ============================================================ -->
+    <!-- فونت‌های حرفه‌ای با پشتیبانی از تمام زبان‌های دنیا              -->
+    <!-- ============================================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+Arabic:wght@400;700;900&family=Noto+Sans+Hebrew:wght@400;700;900&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+TC:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet" />
+
+    <!-- ============================================================ -->
+    <!-- کتابخانه i18next برای چندزبانه‌سازی حرفه‌ای                     -->
+    <!-- ============================================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/i18next@23.10.0/i18next.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@2.4.2/i18nextHttpBackend.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/i18next-browser-languagedetector@7.2.0/i18nextBrowserLanguageDetector.min.js"></script>
+
+    <style>
+        /* ============================================ */
+        /* Global Reset & Base                          */
+        /* ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-glow: #f5c27b;
+            --bg-start: #0b2a3b;
+            --bg-end: #1a4a5f;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-light: #eef6fa;
+            --gold-light: #f7e8c4;
+            --gold-mid: #f5c27b;
+            --shadow-strong: rgba(0, 0, 0, 0.6);
+            --radius-card: 48px;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            margin: 0;
+            background: linear-gradient(145deg, var(--bg-start), var(--bg-end));
+            font-family: 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans Devanagari', 
+                         'Noto Sans TC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Serif', serif;
+            transition: all 0.3s ease;
+        }
+
+        /* ============================================ */
+        /* Main Container                               */
+        /* ============================================ */
+        .tasbih-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--radius-card);
+            padding: 40px 34px 44px;
+            max-width: 560px;
+            width: 100%;
+            box-shadow: 0 40px 70px var(--shadow-strong), inset 0 1px 3px rgba(255,255,255,0.08);
+            border: 1px solid var(--glass-border);
+            transition: all 0.25s ease;
+        }
+
+        /* ============================================ */
+        /* Header                                       */
+        /* ============================================ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-light);
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f9e0a0, #e8b86d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+            font-family: 'Playfair Display', 'Noto Serif', serif;
+            text-shadow: 0 0 30px rgba(245, 194, 123, 0.2);
+        }
+
+        /* ============================================ */
+        /* Language Switcher Button                     */
+        /* ============================================ */
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.06);
+            padding: 8px 16px 8px 20px;
+            border-radius: 60px;
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .lang-switcher:hover {
+            background: rgba(255, 215, 150, 0.12);
+            border-color: var(--gold-mid);
+            transform: scale(1.02);
+        }
+
+        .lang-switcher:active {
+            transform: scale(0.95);
+        }
+
+        .lang-switcher i {
+            color: var(--gold-mid);
+            font-size: 1.2rem;
+        }
+
+        .lang-switcher .lang-label {
+            color: #b8d0db;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .lang-switcher .lang-flag {
+            font-size: 1.4rem;
+            line-height: 1;
+        }
+
+        /* ============================================ */
+        /* Counter Display                              */
+        /* ============================================ */
+        .counter-display {
+            background: rgba(8, 22, 30, 0.75);
+            border-radius: 120px;
+            padding: 22px 30px;
+            margin-bottom: 32px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 150, 0.2);
+            box-shadow: inset 0 8px 18px rgba(0,0,0,0.55), 0 6px 16px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #countDisplay {
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--gold-light);
+            text-shadow: 0 0 40px rgba(245, 194, 123, 0.25), 0 4px 12px rgba(0,0,0,0.7);
+            letter-spacing: 8px;
+            line-height: 1.1;
+            font-variant-numeric: tabular-nums;
+            font-family: 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans Devanagari',
+                         'Noto Sans TC', 'Noto Sans JP', 'Noto Sans KR', monospace;
+            direction: ltr;
+            transition: color 0.15s;
+        }
+
+        /* ============================================ */
+        /* Tasbih Button                                */
+        /* ============================================ */
+        .tasbih-btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 22px 0 28px;
+        }
+
+        .tasbih-btn {
+            background: radial-gradient(circle at 28% 28%, #f5d6a8, #c89a5e);
+            border: none;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.75), 0 0 0 5px rgba(235, 195, 130, 0.25),
+                        inset 0 -10px 16px rgba(0,0,0,0.35), inset 0 10px 20px rgba(255, 245, 210, 0.7);
+            cursor: pointer;
+            transition: all 0.08s cubic-bezier(0.2, 0.9, 0.4, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5.6rem;
+            color: #3b281a;
+            position: relative;
+            touch-action: manipulation;
+        }
+
+        .tasbih-btn:active {
+            transform: scale(0.90);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.85), 0 0 0 6px rgba(235, 195, 130, 0.45),
+                        inset 0 -6px 10px rgba(0,0,0,0.5), inset 0 6px 14px rgba(255, 245, 210, 0.9);
+        }
+
+        .tasbih-btn i {
+            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.3));
+            transition: transform 0.12s;
+        }
+
+        .tasbih-btn:active i {
+            transform: rotate(18deg) scale(1.08);
+        }
+
+        /* ============================================ */
+        /* Controls                                     */
+        /* ============================================ */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin: 20px 0 18px;
+        }
+
+        .ctrl-btn {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 32px;
+            border-radius: 60px;
+            font-family: 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans Devanagari', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-light);
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            flex: 1 1 auto;
+            justify-content: center;
+            min-width: 120px;
+            letter-spacing: 0.3px;
+        }
+
+        .ctrl-btn i {
+            font-size: 1.3rem;
+            color: var(--gold-mid);
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(255, 215, 150, 0.12);
+            border-color: var(--gold-mid);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.94);
+        }
+
+        .ctrl-btn.reset-btn i {
+            color: #ff9f8c;
+        }
+
+        .ctrl-btn.reset-btn:hover {
+            border-color: #ff9f8c;
+            background: rgba(255, 120, 100, 0.12);
+        }
+
+        /* ============================================ */
+        /* Target Section                               */
+        /* ============================================ */
+        .target-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 16px 28px;
+            border-radius: 80px;
+            margin-top: 28px;
+            border: 1px solid rgba(255,255,255,0.06);
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .target-label {
+            color: #cbdbe6;
+            font-weight: 400;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Noto Sans', 'Noto Sans Arabic', sans-serif;
+        }
+
+        .target-label i {
+            color: var(--gold-mid);
+            font-size: 1.2rem;
+        }
+
+        .target-input-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.04);
+            padding: 4px 6px 4px 18px;
+            border-radius: 60px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        #targetInput {
+            width: 80px;
+            padding: 8px 4px;
+            background: transparent;
+            border: none;
+            color: var(--gold-light);
+            font-family: 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans Devanagari', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            direction: ltr;
+        }
+
+        #targetInput::-webkit-inner-spin-button,
+        #targetInput::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        #targetInput {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        .target-input-group .adj-btn {
+            background: rgba(245, 194, 123, 0.15);
+            border: none;
+            color: var(--gold-mid);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .target-input-group .adj-btn:hover {
+            background: rgba(245, 194, 123, 0.3);
+            color: #fae3b3;
+        }
+
+        .target-input-group .adj-btn:active {
+            transform: scale(0.88);
+        }
+
+        /* ============================================ */
+        /* Goal Status                                  */
+        /* ============================================ */
+        .goal-status {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #c5dae6;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            min-height: 34px;
+            font-family: 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans Devanagari', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .goal-status i {
+            margin-left: 10px;
+            color: var(--gold-mid);
+        }
+
+        .goal-status .highlight {
+            color: #f5d6a8;
+            font-weight: 700;
+        }
+
+        .goal-status .celebrate {
+            color: #7ddfb0;
+        }
+
+        /* ============================================ */
+        /* Responsive                                   */
+        /* ============================================ */
+        @media (max-width: 540px) {
+            .tasbih-container {
+                padding: 28px 18px 32px;
+                border-radius: 36px;
+            }
+            #countDisplay {
+                font-size: 4.4rem;
+                letter-spacing: 4px;
+            }
+            .tasbih-btn {
+                width: 150px;
+                height: 150px;
+                font-size: 4.2rem;
+            }
+            .ctrl-btn {
+                padding: 14px 20px;
+                font-size: 0.95rem;
+                min-width: 100px;
+                gap: 10px;
+            }
+            .target-section {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                padding: 16px 20px;
+                border-radius: 40px;
+            }
+            .target-input-group {
+                justify-content: center;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .lang-switcher {
+                padding: 6px 12px 6px 16px;
+            }
+            .lang-switcher .lang-label {
+                font-size: 0.75rem;
+            }
+            .lang-switcher .lang-flag {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            #countDisplay {
+                font-size: 3.4rem;
+                letter-spacing: 2px;
+            }
+            .tasbih-btn {
+                width: 120px;
+                height: 120px;
+                font-size: 3.4rem;
+            }
+            .ctrl-btn {
+                padding: 12px 14px;
+                font-size: 0.85rem;
+                min-width: 80px;
+                gap: 6px;
+            }
+            .target-input-group #targetInput {
+                width: 64px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* ============================================ */
+        /* Accessibility                                */
+        /* ============================================ */
+        .tasbih-btn:focus-visible,
+        .ctrl-btn:focus-visible,
+        .adj-btn:focus-visible,
+        .lang-switcher:focus-visible {
+            outline: 3px solid var(--gold-mid);
+            outline-offset: 4px;
+        }
+
+        /* ============================================ */
+        /* Language direction helper                     */
+        /* ============================================ */
+        [dir="rtl"] .counter-display #countDisplay {
+            direction: ltr;
+        }
+        [dir="rtl"] .goal-status i {
+            margin-left: 10px;
+            margin-right: 0;
+        }
+        [dir="ltr"] .goal-status i {
+            margin-right: 10px;
+            margin-left: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tasbih-container">
+    <!-- Header با دکمه تغییر زبان -->
+    <div class="header">
+        <h1 id="appTitle">📿 تسبیح</h1>
+        <div class="lang-switcher" id="langSwitcher" role="button" tabindex="0" aria-label="تغییر زبان">
+            <span class="lang-flag" id="langFlag">🇮🇷</span>
+            <span class="lang-label" id="langLabel">فارسی</span>
+            <i class="fas fa-chevron-down" style="font-size:0.7rem; opacity:0.6;"></i>
+        </div>
+    </div>
+
+    <!-- شمارنده -->
+    <div class="counter-display">
+        <span id="countDisplay">۰</span>
+    </div>
+
+    <!-- دکمه اصلی تسبیح -->
+    <div class="tasbih-btn-wrapper">
+        <button class="tasbih-btn" id="tasbihBtn" aria-label="Tasbih">
+            <i class="fas fa-circle"></i>
+        </button>
+    </div>
+
+    <!-- دکمه‌های کنترل -->
+    <div class="controls">
+        <button class="ctrl-btn" id="undoBtn"><i class="fas fa-undo-alt"></i> <span data-i18n="undo">برگشت</span></button>
+        <button class="ctrl-btn reset-btn" id="resetBtn"><i class="fas fa-rotate-right"></i> <span data-i18n="reset">ریست</span></button>
+    </div>
+
+    <!-- تنظیم هدف -->
+    <div class="target-section">
+        <span class="target-label"><i class="fas fa-bullseye"></i> <span data-i18n="target">هدف</span>:</span>
+        <div class="target-input-group">
+            <button class="adj-btn" id="targetDecrease" aria-label="Decrease target">−</button>
+            <input type="number" id="targetInput" value="33" min="1" max="9999" />
+            <button class="adj-btn" id="targetIncrease" aria-label="Increase target">+</button>
+        </div>
+    </div>
+
+    <!-- وضعیت پیشرفت -->
+    <div class="goal-status" id="goalStatus">
+        <i class="fas fa-flag-checkered"></i> 
+        <span data-i18n="target_label">هدف</span>: <span class="highlight" id="targetDisplay">۳۳</span>
+        &nbsp;|&nbsp; 
+        <span data-i18n="progress">پیشرفت</span>: <span class="highlight" id="progressDisplay">۰%</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        'use strict';
+
+        // ============================================================
+        // 1. تعریف زبان‌های پشتیبانی شده
+        // ============================================================
+        const LANGUAGES = {
+            fa: { code: 'fa', name: 'فارسی', flag: '🇮🇷', dir: 'rtl' },
+            en: { code: 'en', name: 'English', flag: '🇬🇧', dir: 'ltr' },
+            ar: { code: 'ar', name: 'العربية', flag: '🇸🇦', dir: 'rtl' },
+            tr: { code: 'tr', name: 'Türkçe', flag: '🇹🇷', dir: 'ltr' },
+            ur: { code: 'ur', name: 'اردو', flag: '🇵🇰', dir: 'rtl' },
+            hi: { code: 'hi', name: 'हिन्दी', flag: '🇮🇳', dir: 'ltr' },
+            zh: { code: 'zh', name: '中文', flag: '🇨🇳', dir: 'ltr' },
+            ja: { code: 'ja', name: '日本語', flag: '🇯🇵', dir: 'ltr' },
+            ko: { code: 'ko', name: '한국어', flag: '🇰🇷', dir: 'ltr' },
+            ru: { code: 'ru', name: 'Русский', flag: '🇷🇺', dir: 'ltr' },
+            fr: { code: 'fr', name: 'Français', flag: '🇫🇷', dir: 'ltr' },
+            es: { code: 'es', name: 'Español', flag: '🇪🇸', dir: 'ltr' },
+            de: { code: 'de', name: 'Deutsch', flag: '🇩🇪', dir: 'ltr' },
+            it: { code: 'it', name: 'Italiano', flag: '🇮🇹', dir: 'ltr' },
+            pt: { code: 'pt', name: 'Português', flag: '🇵🇹', dir: 'ltr' },
+        };
+
+        const LANG_LIST = Object.keys(LANGUAGES);
+        let currentLang = 'fa';
+
+        // ============================================================
+        // 2. ترجمه‌ها (با پشتیبانی از ۱۵+ زبان)
+        // ============================================================
+        const translations = {
+            fa: {
+                appTitle: '📿 تسبیح',
+                undo: 'برگشت',
+                reset: 'ریست',
+                target: 'هدف',
+                target_label: 'هدف',
+                progress: 'پیشرفت',
+                congratulations: '🎉 تبریک! به هدف',
+                reached: 'رسیدید!',
+                target_reached: 'هدف',
+                reached_short: 'رسیده!',
+                // برای وضعیت
+                progress_percent: 'پیشرفت',
+            },
+            en: {
+                appTitle: '📿 Tasbih',
+                undo: 'Undo',
+                reset: 'Reset',
+                target: 'Target',
+                target_label: 'Target',
+                progress: 'Progress',
+                congratulations: '🎉 Congratulations! Target',
+                reached: 'reached!',
+                target_reached: 'Target',
+                reached_short: 'Reached!',
+                progress_percent: 'Progress',
+            },
+            ar: {
+                appTitle: '📿 تسبيح',
+                undo: 'تراجع',
+                reset: 'إعادة ضبط',
+                target: 'الهدف',
+                target_label: 'الهدف',
+                progress: 'التقدم',
+                congratulations: '🎉 مبروك! تم الوصول إلى الهدف',
+                reached: '!تم',
+                target_reached: 'الهدف',
+                reached_short: '!تم الوصول',
+                progress_percent: 'التقدم',
+            },
+            tr: {
+                appTitle: '📿 Tesbih',
+                undo: 'Geri Al',
+                reset: 'Sıfırla',
+                target: 'Hedef',
+                target_label: 'Hedef',
+                progress: 'İlerleme',
+                congratulations: '🎉 Tebrikler! Hedef',
+                reached: 'ulaşıldı!',
+                target_reached: 'Hedef',
+                reached_short: 'Ulaşıldı!',
+                progress_percent: 'İlerleme',
+            },
+            ur: {
+                appTitle: '📿 تسبیح',
+                undo: 'واپس',
+                reset: 'ری سیٹ',
+                target: 'ہدف',
+                target_label: 'ہدف',
+                progress: 'پیشرفت',
+                congratulations: '🎉 مبارک! ہدف',
+                reached: 'پہنچ گئے!',
+                target_reached: 'ہدف',
+                reached_short: 'پہنچ گیا!',
+                progress_percent: 'پیشرفت',
+            },
+            hi: {
+                appTitle: '📿 तस्बीह',
+                undo: 'पूर्ववत',
+                reset: 'रीसेट',
+                target: 'लक्ष्य',
+                target_label: 'लक्ष्य',
+                progress: 'प्रगति',
+                congratulations: '🎉 बधाई! लक्ष्य',
+                reached: 'पहुँच गया!',
+                target_reached: 'लक्ष्य',
+                reached_short: 'पहुँच गया!',
+                progress_percent: 'प्रगति',
+            },
+            zh: {
+                appTitle: '📿 泰斯比赫',
+                undo: '撤销',
+                reset: '重置',
+                target: '目标',
+                target_label: '目标',
+                progress: '进度',
+                congratulations: '🎉 恭喜！达到目标',
+                reached: '！',
+                target_reached: '目标',
+                reached_short: '已达成！',
+                progress_percent: '进度',
+            },
+            ja: {
+                appTitle: '📿 タスビーフ',
+                undo: '元に戻す',
+                reset: 'リセット',
+                target: '目標',
+                target_label: '目標',
+                progress: '進捗',
+                congratulations: '🎉 おめでとう！目標',
+                reached: 'に到達！',
+                target_reached: '目標',
+                reached_short: '達成！',
+                progress_percent: '進捗',
+            },
+            ko: {
+                appTitle: '📿 타스비',
+                undo: '실행 취소',
+                reset: '초기화',
+                target: '목표',
+                target_label: '목표',
+                progress: '진행률',
+                congratulations: '🎉 축하합니다! 목표',
+                reached: '달성!',
+                target_reached: '목표',
+                reached_short: '달성!',
+                progress_percent: '진행률',
+            },
+            ru: {
+                appTitle: '📿 Тасбих',
+                undo: 'Отмена',
+                reset: 'Сброс',
+                target: 'Цель',
+                target_label: 'Цель',
+                progress: 'Прогресс',
+                congratulations: '🎉 Поздравляем! Цель',
+                reached: 'достигнута!',
+                target_reached: 'Цель',
+                reached_short: 'Достигнута!',
+                progress_percent: 'Прогресс',
+            },
+            fr: {
+                appTitle: '📿 Tasbih',
+                undo: 'Annuler',
+                reset: 'Réinitialiser',
+                target: 'Objectif',
+                target_label: 'Objectif',
+                progress: 'Progression',
+                congratulations: '🎉 Félicitations ! Objectif',
+                reached: 'atteint !',
+                target_reached: 'Objectif',
+                reached_short: 'Atteint !',
+                progress_percent: 'Progression',
+            },
+            es: {
+                appTitle: '📿 Tasbih',
+                undo: 'Deshacer',
+                reset: 'Reiniciar',
+                target: 'Objetivo',
+                target_label: 'Objetivo',
+                progress: 'Progreso',
+                congratulations: '🎉 ¡Felicidades! Objetivo',
+                reached: 'alcanzado!',
+                target_reached: 'Objetivo',
+                reached_short: '¡Alcanzado!',
+                progress_percent: 'Progreso',
+            },
+            de: {
+                appTitle: '📿 Tasbih',
+                undo: 'Rückgängig',
+                reset: 'Zurücksetzen',
+                target: 'Ziel',
+                target_label: 'Ziel',
+                progress: 'Fortschritt',
+                congratulations: '🎉 Glückwunsch! Ziel',
+                reached: 'erreicht!',
+                target_reached: 'Ziel',
+                reached_short: 'Erreicht!',
+                progress_percent: 'Fortschritt',
+            },
+            it: {
+                appTitle: '📿 Tasbih',
+                undo: 'Annulla',
+                reset: 'Resetta',
+                target: 'Obiettivo',
+                target_label: 'Obiettivo',
+                progress: 'Progresso',
+                congratulations: '🎉 Congratulazioni! Obiettivo',
+                reached: 'raggiunto!',
+                target_reached: 'Obiettivo',
+                reached_short: 'Raggiunto!',
+                progress_percent: 'Progresso',
+            },
+            pt: {
+                appTitle: '📿 Tasbih',
+                undo: 'Desfazer',
+                reset: 'Reiniciar',
+                target: 'Alvo',
+                target_label: 'Alvo',
+                progress: 'Progresso',
+                congratulations: '🎉 Parabéns! Alvo',
+                reached: 'atingido!',
+                target_reached: 'Alvo',
+                reached_short: 'Atingido!',
+                progress_percent: 'Progresso',
+            }
+        };
+
+        // ============================================================
+        // 3. State
+        // ============================================================
+        let count = 0;
+        let target = 33;
+        let lastCount = 0;
+        let isTargetReached = false;
+
+        // ============================================================
+        // 4. DOM Elements
+        // ============================================================
+        const countDisplay = document.getElementById('countDisplay');
+        const tasbihBtn = document.getElementById('tasbihBtn');
+        const undoBtn = document.getElementById('undoBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const targetInput = document.getElementById('targetInput');
+        const targetDecrease = document.getElementById('targetDecrease');
+        const targetIncrease = document.getElementById('targetIncrease');
+        const targetDisplay = document.getElementById('targetDisplay');
+        const progressDisplay = document.getElementById('progressDisplay');
+        const goalStatus = document.getElementById('goalStatus');
+        const appTitle = document.getElementById('appTitle');
+        const langSwitcher = document.getElementById('langSwitcher');
+        const langFlag = document.getElementById('langFlag');
+        const langLabel = document.getElementById('langLabel');
+
+        // ============================================================
+        // 5. Core Functions
+        // ============================================================
+
+        function getTranslation(key, lang = currentLang) {
+            return translations[lang]?.[key] || translations['en'][key] || key;
+        }
+
+        function updateUI() {
+            // شمارش
+            countDisplay.innerText = count.toLocaleString('fa-IR');
+            targetDisplay.innerText = target.toLocaleString('fa-IR');
+
+            // درصد
+            let percent = 0;
+            if (target > 0) {
+                percent = Math.min(100, (count / target) * 100);
+            }
+            const roundedPercent = Math.round(percent);
+            progressDisplay.innerText = roundedPercent + '%';
+
+            // وضعیت هدف (با ترجمه)
+            const reached = (target > 0 && count >= target);
+            if (reached && !isTargetReached) {
+                isTargetReached = true;
+                const t = getTranslation('congratulations');
+                const targetNum = target.toLocaleString('fa-IR');
+                const reachedText = getTranslation('reached');
+                goalStatus.innerHTML = `<i class="fas fa-check-circle celebrate"></i> 
+                                        ${t} <span class="highlight">${targetNum}</span> ${reachedText}`;
+                goalStatus.style.color = '#b8e6d0';
+                if (navigator.vibrate) navigator.vibrate([20, 50, 20]);
+            } else if (!reached) {
+                isTargetReached = false;
+                const tLabel = getTranslation('target_label');
+                const pLabel = getTranslation('progress');
+                goalStatus.innerHTML = `<i class="fas fa-flag-checkered"></i> 
+                                        ${tLabel}: <span class="highlight">${target.toLocaleString('fa-IR')}</span>
+                                        &nbsp;|&nbsp; ${pLabel}: <span class="highlight">${roundedPercent}%</span>`;
+                goalStatus.style.color = '#c5dae6';
+            }
+
+            // همگام‌سازی اینپوت
+            if (parseInt(targetInput.value, 10) !== target) {
+                targetInput.value = target;
+            }
+        }
+
+        function increment() {
+            lastCount = count;
+            count++;
+            if (count > 999999) count = 999999;
+            updateUI();
+            if (navigator.vibrate) navigator.vibrate(8);
+        }
+
+        function undo() {
+            if (count > 0) {
+                const newCount = lastCount;
+                if (newCount < count) {
+                    count = newCount;
+                } else {
+                    count = Math.max(0, count - 1);
+                }
+                lastCount = count;
+                updateUI();
+            } else {
+                countDisplay.style.transition = 'color 0.1s';
+                countDisplay.style.color = '#ff9f8c';
+                setTimeout(() => {
+                    countDisplay.style.color = '#f7e8c4';
+                }, 200);
+            }
+        }
+
+        function resetCounter() {
+            if (count === 0) {
+                countDisplay.style.transition = 'color 0.1s';
+                countDisplay.style.color = '#f5c27b';
+                setTimeout(() => {
+                    countDisplay.style.color = '#f7e8c4';
+                }, 200);
+                return;
+            }
+            lastCount = count;
+            count = 0;
+            isTargetReached = false;
+            updateUI();
+            if (navigator.vibrate) navigator.vibrate([12, 30, 12]);
+        }
+
+        function setTarget(newTarget) {
+            let val = Number(newTarget);
+            if (isNaN(val) || val < 1) val = 1;
+            if (val > 9999) val = 9999;
+            target = Math.floor(val);
+            targetInput.value = target;
+            if (count >= target) {
+                isTargetReached = true;
+            } else {
+                isTargetReached = false;
+            }
+            updateUI();
+        }
+
+        // ============================================================
+        // 6. Language Switching
+        // ============================================================
+
+        function switchLanguage(langCode) {
+            if (!LANGUAGES[langCode]) return;
+            currentLang = langCode;
+            const langData = LANGUAGES[langCode];
+
+            // تغییر جهت صفحه
+            document.documentElement.dir = langData.dir;
+            document.documentElement.lang = langCode;
+
+            // به‌روزرسانی دکمه زبان
+            langFlag.textContent = langData.flag;
+            langLabel.textContent = langData.name;
+
+            // ترجمه عناصر دارای data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = getTranslation(key);
+            });
+
+            // ترجمه عنوان
+            appTitle.textContent = getTranslation('appTitle');
+
+            // به‌روزرسانی وضعیت (برای ترجمه مجدد)
+            updateUI();
+
+            // تغییر فونت بر اساس زبان (بهبود نمایش)
+            document.body.style.fontFamily = 
+                `'Noto Sans', 'Noto Sans ${langCode === 'fa' ? 'Arabic' : langCode === 'ar' ? 'Arabic' : 
+                langCode === 'he' ? 'Hebrew' : langCode === 'hi' ? 'Devanagari' : 
+                langCode === 'zh' ? 'TC' : langCode === 'ja' ? 'JP' : langCode === 'ko' ? 'KR' : ''}', 
+                'Noto Serif', serif`;
+
+            // ذخیره در localStorage
+            try {
+                localStorage.setItem('tasbih-lang', langCode);
+            } catch(e) {}
+        }
+
+        function cycleLanguage() {
+            const currentIndex = LANG_LIST.indexOf(currentLang);
+            const nextIndex = (currentIndex + 1) % LANG_LIST.length;
+            const nextLang = LANG_LIST[nextIndex];
+            switchLanguage(nextLang);
+        }
+
+        // ============================================================
+        // 7. Event Listeners
+        // ============================================================
+
+        // دکمه تغییر زبان
+        langSwitcher.addEventListener('click', cycleLanguage);
+        langSwitcher.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                cycleLanguage();
+            }
+        });
+
+        // دکمه‌های اصلی
+        tasbihBtn.addEventListener('click', increment);
+        undoBtn.addEventListener('click', undo);
+        resetBtn.addEventListener('click', resetCounter);
+
+        // تنظیم هدف
+        targetIncrease.addEventListener('click', (e) => {
+            e.preventDefault();
+            setTarget(target + 1);
+        });
+        targetDecrease.addEventListener('click', (e) => {
+            e.preventDefault();
+            setTarget(target - 1);
+        });
+
+        targetInput.addEventListener('input', function() {
+            let val = parseInt(this.value, 10);
+            if (!isNaN(val) && val >= 1) {
+                const clamped = Math.min(9999, Math.floor(val));
+                target = clamped;
+                updateUI();
+            } else if (this.value === '') {
+                this.value = target;
+            }
+        });
+
+        targetInput.addEventListener('blur', function() {
+            let val = parseInt(this.value, 10);
+            if (isNaN(val) || val < 1) {
+                setTarget(target);
+            } else {
+                setTarget(val);
+            }
+        });
+
+        targetInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') this.blur();
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                setTarget(target + 1);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                setTarget(target - 1);
+            }
+        });
+
+        // ============================================================
+        // 8. Keyboard Shortcuts (Global)
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            const tag = e.target.tagName;
+            const isInput = (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
+
+            if (e.key === ' ' && !isInput) {
+                e.preventDefault();
+                increment();
+            } else if (e.key === 'Backspace' && !isInput) {
+                e.preventDefault();
+                undo();
+            } else if ((e.key === 'r' || e.key === 'R') && !isInput) {
+                e.preventDefault();
+                resetCounter();
+            } else if ((e.key === 'l' || e.key === 'L') && !isInput) {
+                // میانبر L برای تغییر زبان
+                e.preventDefault();
+                cycleLanguage();
+            }
+        });
+
+        // ============================================================
+        // 9. Init
+        // ============================================================
+
+        // بارگذاری زبان ذخیره شده
+        let savedLang = 'fa';
+        try {
+            const stored = localStorage.getItem('tasbih-lang');
+            if (stored && LANGUAGES[stored]) {
+                savedLang = stored;
+            }
+        } catch(e) {}
+
+        // تنظیم اولیه
+        setTarget(33);
+        switchLanguage(savedLang);
+        updateUI();
+
+        console.log('📿 Digital Tasbih with Multi-Language Support!');
+        console.log('🌍 Supported languages:', Object.keys(LANGUAGES).length);
+        console.log('⌨️  Space = Tasbih | Backspace = Undo | R = Reset | L = Change Language');
+    })();
+</script>
+
+</body>
+</html>
